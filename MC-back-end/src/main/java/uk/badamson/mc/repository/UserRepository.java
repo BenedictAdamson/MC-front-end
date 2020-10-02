@@ -1,4 +1,4 @@
-package uk.badamson.mc.presentation;
+package uk.badamson.mc.repository;
 /*
  * © Copyright Benedict Adamson 2019-20.
  *
@@ -18,24 +18,16 @@ package uk.badamson.mc.presentation;
  * along with MC.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import org.testcontainers.containers.GenericContainer;
+import org.springframework.data.repository.CrudRepository;
 
-import uk.badamson.mc.Version;
+import uk.badamson.mc.User;
 
 /**
  * <p>
- * A Testcontainers Docker container for the MC-front-end.
+ * Interface for generic CRUD operations on a repository for {@link User}
+ * objects.
  * </p>
  */
-final class McFrontEndContainer extends GenericContainer<McFrontEndContainer> {
-
-   public static final String VERSION = Version.VERSION;
-   public static final String IMAGE = "index.docker.io/benedictadamson/mc-front-end-srv:"
-            + VERSION;
-
-   McFrontEndContainer() {
-      super(IMAGE);
-      withExposedPorts(80);
-   }
+public interface UserRepository extends CrudRepository<User, String> {
 
 }
