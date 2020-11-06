@@ -5,33 +5,46 @@ import { v4 as uuid } from 'uuid';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { NamedUUID } from './named-uuid';
-import { Scenario } from './scenario';
+import { Game } from './game'
+import { GameIdentifier } from './game-identifier'
+
 
 @Injectable({
 	providedIn: 'root'
 })
-export class ScenarioService {
-
-	private scenarioUrl = '/api/scenario';  // URL to API
+export class GameService {
 
 	constructor(
 		private http: HttpClient) { }
 
-	getScenarioIdentifiers(): Observable<NamedUUID[]> {
-		return this.http.get<NamedUUID[]>(this.scenarioUrl)
+	static getGamesPath(scenario: uuid): string {
+		return '/api/scenario/' + scenario + '/game/';
+	}
+
+	static getGamePath(id: GameIdentifier): string {
+		return GameService.getGamesPath(id.scenario) + id.created;
+	}
+
+    /**
+     * Get the creation times (instance IDs) of the games of a scenario.
+     */
+	getGamesOfScenario(scenario: uuid): Observable<string[]> {
+		return this.http.get<string[]>(GameService.getGamesPath(scenario))
 			.pipe(
-				catchError(this.handleError<NamedUUID[]>('getScenarioIdentifiers', []))
+				catchError(this.handleError<string[]>('getGamesOfScenario', []))
 			);
 	}
 
-	getScenario(id: uuid): Observable<Scenario> {
-		const url = `${this.scenarioUrl}/${id}`;
-		return this.http.get<Scenario>(url)
+    /**
+     * Get the game that has a given ID.
+     */
+	getGame(id: GameIdentifier): Observable<Game> {
+		return this.http.get<Game>(GameService.getGamePath(id))
 			.pipe(
-				catchError(this.handleError<Scenario>(`getScenario id=${id}`))
+				catchError(this.handleError<Game>('getGame', null))
 			);
 	}
+
     /**
      * Handle Http operation that failed.
      * Let the app continue.
