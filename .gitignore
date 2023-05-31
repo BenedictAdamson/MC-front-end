@@ -1,7 +1,2 @@
-target/
-*.tgz
-*.log
-*.iso
-*.lock
-packer_cache/
-/.idea
+/target/
+/node_modules/
