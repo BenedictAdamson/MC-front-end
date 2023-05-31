@@ -4,11 +4,34 @@
    <modelVersion>4.0.0</modelVersion>
    <parent>
       <groupId>uk.badamson.mc</groupId>
-      <artifactId>MC-web</artifactId>
-      <version>3.2.2</version>
+      <artifactId>MC-parent</artifactId>
+      <version>3.1.6</version>
    </parent>
    <artifactId>MC-front-end</artifactId>
+   <version>3.3.0</version>
    <packaging>pom</packaging>
+   <organization>
+      <name>Benedict Adamson</name>
+   </organization>
+   <licenses>
+      <license>
+         <name>GNU Affero General Public License, Version 3</name>
+         <url>https://www.gnu.org/licenses/agpl.html</url>
+         <distribution>repo</distribution>
+      </license>
+   </licenses>
+   <scm>
+      <connection>scm:git:git@github.com:BenedictAdamson/MC-front-end.git</connection>
+      <developerConnection>scm:git:git@github.com:BenedictAdamson/MC-fron-end.git</developerConnection>
+      <url>https://github.com/BenedictAdamson/MC-fron-end</url>
+   </scm>
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <repository.releases.url>http://thegn:8081/repository/maven-releases/</repository.releases.url>
+      <repository.snapshot.url>http://thegn:8081/repository/maven-snapshots/</repository.snapshot.url>
+      <!-- Debian package version IDs may not have a -SNAPSHOT suffix. -->
+      <debian-package.version>3.3.0</debian-package.version>
+   </properties>
    <build>
       <resources>
          <resource>

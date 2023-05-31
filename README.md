@@ -1,6 +1,6 @@
 # MC-front-end
 
-© Copyright Benedict Adamson 2018-21.
+© Copyright Benedict Adamson 2018-23.
 
 The front-end and front-end HTTP server of the Mission Command game.
 

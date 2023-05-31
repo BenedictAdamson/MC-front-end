@@ -1,7 +1,7 @@
-# Dockerfile for the use in the Jenkinsfile for the MC project,
+# Dockerfile for the use in the Jenkinsfile for the MC-front-end project,
 # to set up the build environment for Jenkins to use.
 
-# © Copyright Benedict Adamson 2018-22.
+# © Copyright Benedict Adamson 2018-23.
 # 
 # This file is part of MC.
 #
@@ -46,16 +46,12 @@ RUN add-apt-repository -y \
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
 RUN add-apt-repository -y \
    "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-# Add Helm repository
-RUN curl https://helm.baltorepo.com/organization/signing.asc | apt-key add -
-RUN echo "deb https://baltocdn.com/helm/stable/debian/ all main" > /etc/apt/sources.list.d/helm-stable-debian.list
-# Install Chrome, Docker and Helm
+# Install Chrome and Docker
 RUN apt-get -y update && apt-get -y install \
    containerd.io \
    docker-ce \
    docker-ce-cli \
-   google-chrome-stable \
-   helm
+   google-chrome-stable
 
 # Setup users and groups
 RUN groupadd -g ${JENKINSGID} jenkins

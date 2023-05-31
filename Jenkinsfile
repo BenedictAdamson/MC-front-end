@@ -1,4 +1,4 @@
-// Jenkinsfile for the MC project
+// Jenkinsfile for the MC-font-end project
 
 /* 
  * © Copyright Benedict Adamson 2018-23.
@@ -67,7 +67,7 @@ pipeline {
         	 */
             when{
                 not{
-                    branch 'master'
+                    branch 'main'
                 }
             } 
             steps {
@@ -79,7 +79,7 @@ pipeline {
         stage('Build, verify and deploy') {
         	/* Includes pushing Docker images. */
             when{
-                 branch 'master'
+                 branch 'main'
             } 
             steps {
                 configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]){ 
@@ -92,18 +92,13 @@ pipeline {
         always {// We ESPECIALLY want the reports on failure
             script {
                 recordIssues tools: [
-                	java(),
-                	javaDoc(),
                 	mavenConsole(),
-                	pmdParser(pattern: '**/target/pmd.xml'),
 					]
             }
-            junit 'MC-*/target/*-reports/**/TEST-*.xml'
-            junit 'MC-*/target/karma-reports/*.xml'  
+            junit 'MC-*/target/karma-reports/*.xml'
         }
         success {
             archiveArtifacts artifacts: 'MC-*/target/*.deb', fingerprint: true
-            archiveArtifacts artifacts: 'MC-*/target/*.jar', fingerprint: true
             archiveArtifacts artifacts: 'MC-*/target/*.tgz', fingerprint: true
         }
     }
