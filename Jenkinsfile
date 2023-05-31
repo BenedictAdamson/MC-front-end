@@ -95,7 +95,7 @@ pipeline {
                 	mavenConsole(),
 					]
             }
-            junit 'MC-*/target/karma-reports/*.xml'
+            junit 'target/karma-reports/*.xml'
         }
         success {
             archiveArtifacts artifacts: 'MC-*/target/*.deb', fingerprint: true
