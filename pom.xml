@@ -8,7 +8,7 @@
       <version>3.1.6</version>
    </parent>
    <artifactId>MC-front-end</artifactId>
-   <version>3.3.0</version>
+   <version>3.3.1</version>
    <packaging>pom</packaging>
    <organization>
       <name>Benedict Adamson</name>
@@ -30,7 +30,7 @@
       <repository.releases.url>http://thegn:8081/repository/maven-releases/</repository.releases.url>
       <repository.snapshot.url>http://thegn:8081/repository/maven-snapshots/</repository.snapshot.url>
       <!-- Debian package version IDs may not have a -SNAPSHOT suffix. -->
-      <debian-package.version>3.3.0</debian-package.version>
+      <debian-package.version>3.3.1</debian-package.version>
    </properties>
    <build>
       <resources>
