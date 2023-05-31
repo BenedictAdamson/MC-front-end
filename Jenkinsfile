@@ -98,8 +98,8 @@ pipeline {
             junit 'target/karma-reports/*.xml'
         }
         success {
-            archiveArtifacts artifacts: 'MC-*/target/*.deb', fingerprint: true
-            archiveArtifacts artifacts: 'MC-*/target/*.tgz', fingerprint: true
+            archiveArtifacts artifacts: 'target/*.deb', fingerprint: true
+            archiveArtifacts artifacts: 'target/*.tgz', fingerprint: true
         }
     }
 }
