@@ -30,6 +30,18 @@
       <!-- Debian package version IDs may not have a -SNAPSHOT suffix. -->
       <debian-package.version>3.3.1</debian-package.version>
    </properties>
+   <distributionManagement>
+      <repository>
+         <id>releases.repo</id>
+         <name>MC Repository</name>
+         <url>${repository.releases.url}</url>
+      </repository>
+      <snapshotRepository>
+         <id>snapshot.repo</id>
+         <name>MC SNAPSHOT Repository</name>
+         <url>${repository.snapshot.url}</url>
+      </snapshotRepository>
+   </distributionManagement>
    <build>
       <resources>
          <resource>
