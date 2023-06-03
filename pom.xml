@@ -2,11 +2,7 @@
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
-   <parent>
-      <groupId>uk.badamson.mc</groupId>
-      <artifactId>MC-parent</artifactId>
-      <version>3.1.6</version>
-   </parent>
+   <groupId>uk.badamson.mc</groupId>
    <artifactId>MC-front-end</artifactId>
    <version>3.3.1</version>
    <packaging>pom</packaging>
@@ -29,6 +25,8 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <repository.releases.url>http://thegn:8081/repository/maven-releases/</repository.releases.url>
       <repository.snapshot.url>http://thegn:8081/repository/maven-snapshots/</repository.snapshot.url>
+      <MC.node.version>v16.15.0</MC.node.version>
+      <MC.npm.version>8.5.5</MC.npm.version>
       <!-- Debian package version IDs may not have a -SNAPSHOT suffix. -->
       <debian-package.version>3.3.1</debian-package.version>
    </properties>
@@ -49,6 +47,7 @@
          <plugin>
             <groupId>com.github.eirslett</groupId>
             <artifactId>frontend-maven-plugin</artifactId>
+            <version>1.12.1</version>
             <configuration>
                <nodeVersion>${MC.node.version}</nodeVersion>
                <npmVersion>${MC.npm.version}</npmVersion>
@@ -101,6 +100,7 @@
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
+            <version>3.5.0</version>
             <configuration>
                <descriptors>
                   <descriptor>src/main/assembly/assembly.xml</descriptor>
@@ -120,6 +120,7 @@
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-resources-plugin</artifactId>
+            <version>3.3.1</version>
             <executions>
                <execution>
                   <phase>process-resources</phase>
@@ -135,6 +136,7 @@
          <plugin>
             <groupId>org.vafer</groupId>
             <artifactId>jdeb</artifactId>
+            <version>1.10</version>
             <executions>
                <execution>
                   <phase>package</phase>
@@ -169,6 +171,7 @@
          <plugin>
             <groupId>io.fabric8</groupId>
             <artifactId>docker-maven-plugin</artifactId>
+            <version>0.42.1</version>
             <configuration>
                <images>
                   <image>
