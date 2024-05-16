@@ -4,7 +4,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>uk.badamson.mc</groupId>
    <artifactId>MC-front-end</artifactId>
-   <version>3.3.2-SNAPSHOT</version>
+   <version>3.3.2</version>
    <packaging>pom</packaging>
    <organization>
       <name>Benedict Adamson</name>
