@@ -23,8 +23,8 @@
    </scm>
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <repository.releases.url>http://thegn:8081/repository/maven-releases/</repository.releases.url>
-      <repository.snapshot.url>http://thegn:8081/repository/maven-snapshots/</repository.snapshot.url>
+      <repository.releases.url>http://thegn:8081/releases/</repository.releases.url>
+      <repository.snapshot.url>http://thegn:8081/snapshots/</repository.snapshot.url>
       <MC.node.version>v16.15.0</MC.node.version>
       <MC.npm.version>8.5.5</MC.npm.version>
       <!-- Debian package version IDs may not have a -SNAPSHOT suffix. -->
