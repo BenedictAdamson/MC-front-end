@@ -1,4 +1,6 @@
 .idea/
+.gradle/
 *.iml
 /target/
 /node_modules/
+/build/
