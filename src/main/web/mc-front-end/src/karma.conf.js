@@ -23,7 +23,7 @@ module.exports = function(config) {
 		},
 		reporters: ['progress', 'kjhtml', 'junit'],
 		junitReporter: {
-			outputDir: '../../../../../target/karma-reports',
+			outputDir: '../../../../../build/karma-reports',
 			outputFile: 'TEST-mc-front-end.xml',
 			useBrowserName: false,
 			suite: 'Karma'
