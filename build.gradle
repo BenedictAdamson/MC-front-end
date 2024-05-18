@@ -2,6 +2,7 @@ plugins {
     id 'base'
     id 'maven-publish'
     id "com.github.node-gradle.node" version "7.0.2"
+    id 'com.netflix.nebula.deb' version '11.3.0'
 }
 
 group = 'uk.badamson.mc'
@@ -51,6 +52,7 @@ tasks.register('packageNpmApp', Tar) {
 
 String testsExecutedMarkerName = "${projectDir}/build/.tests.executed"
 tasks.register('testNpm', NpmTask) {
+    group = 'Verification'
     dependsOn assemble
     args = ['run', 'test-headless']
 
@@ -61,6 +63,33 @@ tasks.register('testNpm', NpmTask) {
         new File(testsExecutedMarkerName).text = 'delete this file to force re-execution JavaScript tests'
     }
     outputs.file testsExecutedMarkerName
+}
+
+tasks.register('packageDeb', Deb) {
+    dependsOn npm_run_build
+    group = 'Publishing'
+    packageName = 'missioncommand-fe'
+    version = (project.version as String).replace('-SNAPSHOT', '')
+    release = 1
+    priority = 'optional'
+    maintainer = 'Benedict Adamson <badamson@spamcop.net>'
+    description = 'front-end of the MC game server'
+    distribution = 'stable'
+
+    preInstall file('src/deb/control/preinst')
+    postInstall file('src/deb/control/postinst')
+    preUninstall file('src/deb/control/prerm')
+
+    requires('nginx')
+
+    into '/usr'
+
+    from(fileTree("src/main/resources/etc/nginx/conf.d")) {
+        into '/usr/share/missioncommand-fe/etc'
+    }
+    from(fileTree("${project.projectDir}/build/ng-dist/mc-front-end")) {
+        into '/usr/share/missioncommand-fe/html'
+    }
 }
 
 assemble.dependsOn packageNpmApp
