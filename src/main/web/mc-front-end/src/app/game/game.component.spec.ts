@@ -4,6 +4,8 @@ import {v4 as uuid} from 'uuid';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
 
 import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+
 
 import {AbstractGameBackEndService} from '../service/abstract.game.back-end.service';
 import {AbstractScenarioBackEndService} from '../service/abstract.scenario.back-end.service';
@@ -112,7 +114,8 @@ describe('GameComponent', () => {
         {provide: AbstractGameBackEndService, useValue: gameServiceStub},
         {provide: AbstractScenarioBackEndService, useValue: scenarioServiceStub},
         {provide: AbstractSelfService, useValue: selfService}
-      ]
+      ],
+      imports: [RouterTestingModule]
     });
 
     fixture = TestBed.createComponent(GameComponent);
