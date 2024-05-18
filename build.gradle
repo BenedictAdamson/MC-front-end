@@ -38,11 +38,15 @@ tasks.npm_run_build {
 }
 
 
-tasks.register('packageNpmApp', Zip) {
+tasks.register('packageNpmApp', Tar) {
     dependsOn npm_run_build
-    archiveBaseName = 'mc-font-end'
-    archiveExtension = 'jar'
-    destinationDirectory = file("${projectDir}/build/npm")
+    archiveBaseName = 'MC-font-end'
+    archiveAppendix = 'client'
+    archiveExtension = 'tgz'
+    compression = Compression.GZIP
+    destinationDirectory = file("${projectDir}/build")
+    into("MC-front-end-${version}")
+    from fileTree("${project.projectDir}/build/ng-dist/mc-front-end")
 }
 
 String testsExecutedMarkerName = "${projectDir}/build/.tests.executed"
