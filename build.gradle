@@ -1,6 +1,5 @@
 plugins {
     id 'base'
-    id 'java-library'
     id 'maven-publish'
     id "com.github.node-gradle.node" version "7.0.2"
 }
@@ -35,7 +34,7 @@ tasks.npm_install {
 }
 tasks.npm_run_build {
     inputs.files fileTree("${project.projectDir}/src/main/web/mc-front-end")
-    outputs.dir "${project.projectDir}/target"
+    outputs.dir "${project.projectDir}/build/ng-dist"
 }
 
 
@@ -46,7 +45,7 @@ tasks.register('packageNpmApp', Zip) {
     destinationDirectory = file("${projectDir}/build/npm")
 }
 
-String testsExecutedMarkerName = "${projectDir}/.tests.executed"
+String testsExecutedMarkerName = "${projectDir}/build/.tests.executed"
 tasks.register('testNpm', NpmTask) {
     dependsOn assemble
     args = ['run', 'test-headless']
@@ -75,8 +74,6 @@ artifacts {
         type "jar"
     }
 }
-
-java.sourceCompatibility = JavaVersion.VERSION_17
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
