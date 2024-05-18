@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'uk.badamson.mc'
-version = '3.3.3-SNAPSHOT'
+version = '3.3.3'
 description = 'MC-front-end'
 def dockerImage = "mc-front-end-srv:${project.version}"
 
