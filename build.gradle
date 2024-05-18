@@ -27,7 +27,8 @@ repositories {
 }
 
 node {
-    version = "v16.15.0"
+    download = true
+    version = "16.15.0"
     npmVersion = "8.5.5"
     nodeProjectDir = file("${project.projectDir}/src/main/web/mc-front-end")
 }
