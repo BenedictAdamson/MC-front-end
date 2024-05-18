@@ -34,12 +34,7 @@ node {
 tasks.npm_install {
 }
 tasks.npm_run_build {
-    inputs.files fileTree("public")
-    inputs.files fileTree("src")
-
-    inputs.file 'package.json'
-    inputs.file 'package-lock.json'
-
+    inputs.files fileTree("${project.projectDir}/src/main/web/mc-front-end")
     outputs.dir "${project.projectDir}/target"
 }
 
@@ -51,7 +46,22 @@ tasks.register('packageNpmApp', Zip) {
     destinationDirectory = file("${projectDir}/build/npm")
 }
 
+String testsExecutedMarkerName = "${projectDir}/.tests.executed"
+tasks.register('testNpm', NpmTask) {
+    dependsOn assemble
+    args = ['run', 'test-headless']
+
+    inputs.files fileTree("${project.projectDir}/src/main/web/mc-front-end")
+
+    // allows easy triggering re-tests
+    doLast {
+        new File(testsExecutedMarkerName).text = 'delete this file to force re-execution JavaScript tests'
+    }
+    outputs.file testsExecutedMarkerName
+}
+
 assemble.dependsOn packageNpmApp
+check.dependsOn testNpm
 
 configurations {
     npmResources
