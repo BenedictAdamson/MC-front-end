@@ -43,7 +43,7 @@ tasks.npm_run_build {
 tasks.register('packageNpmApp', Tar) {
     dependsOn npm_run_build
     archiveBaseName = 'MC-font-end'
-    archiveAppendix = 'client'
+    archiveClassifier = 'client'
     archiveExtension = 'tgz'
     compression = Compression.GZIP
     destinationDirectory = file("${projectDir}/build")
@@ -118,6 +118,37 @@ tasks.register('pushDockerImage', Exec) {
     dependsOn ':MC-Spring:buildDockerImage'
     dependsOn ':MC-Spring:loginDockerHub'
     commandLine 'docker', 'image', 'push', dockerImage
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact(packageNpmApp)
+            pom {
+                organization {
+                    name = 'Benedict Adamson'
+                }
+                licenses {
+                    license {
+                        name = 'GNU Affero General Public License, Version 3'
+                        url = 'https://www.gnu.org/licenses/agpl.html'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git@github.com:BenedictAdamson/MC-front-end.git'
+                    developerConnection = 'scm:git:git@github.com:BenedictAdamson/MC-fron-end.git'
+                    url = 'https://github.com/BenedictAdamson/MC-fron-end'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            allowInsecureProtocol = true
+            credentials(PasswordCredentials)
+        }
+    }
 }
 
 assemble.dependsOn packageNpmApp
