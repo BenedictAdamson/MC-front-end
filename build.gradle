@@ -8,6 +8,7 @@ plugins {
 group = 'uk.badamson.mc'
 version = '3.3.3-SNAPSHOT'
 description = 'MC-front-end'
+def dockerImage = "mc-front-end-srv:${project.version}"
 
 def releasesRepoUrl = 'http://thegn:8081/releases/'
 def snapshotsRepoUrl = 'http://thegn:8081/snapshots/'
@@ -90,6 +91,33 @@ tasks.register('packageDeb', Deb) {
     from(fileTree("${project.projectDir}/build/ng-dist/mc-front-end")) {
         into '/usr/share/missioncommand-fe/html'
     }
+}
+
+tasks.register('prepareDockerBuildContext', Copy) {
+    group = 'Publishing'
+    dependsOn 'packageDeb'
+    from 'src/main/docker/Dockerfile'
+    from(packageDeb.outputs.files) {
+        include '*.deb'
+        rename 'missioncommand-fe_.*_all.deb', 'missioncommand-fe.deb'
+    }
+    into "${project.buildDir}/docker/context"
+}
+tasks.register('buildDockerImage', Exec) {
+    group = 'Publishing'
+    dependsOn 'prepareDockerBuildContext'
+    commandLine 'docker', 'build', '--tag', dockerImage, "${project.buildDir}/docker/context"
+}
+tasks.register('loginDockerHub', Exec) {
+    def credentials = providers.credentials(PasswordCredentials, 'dockerhub').get()
+    standardInput = new ByteArrayInputStream(credentials.password.bytes)
+    commandLine 'docker', 'login', '--username', credentials.username, '--password-stdin'
+}
+tasks.register('pushDockerImage', Exec) {
+    group = 'Publishing'
+    dependsOn ':MC-Spring:buildDockerImage'
+    dependsOn ':MC-Spring:loginDockerHub'
+    commandLine 'docker', 'image', 'push', dockerImage
 }
 
 assemble.dependsOn packageNpmApp
