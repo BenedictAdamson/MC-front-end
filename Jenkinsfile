@@ -1,7 +1,7 @@
 // Jenkinsfile for the MC-font-end project
 
 /* 
- * © Copyright Benedict Adamson 2018-23.
+ * © Copyright Benedict Adamson 2018-24.
  * 
  * This file is part of MC.
  *
@@ -21,17 +21,10 @@
  
  /*
   * Jenkins plugins used:
-  * Config File Provider
-  *     - Should configure the file settings.xml with ID 'maven-settings' as the Maven settings file
-  *     - That settings.xml configuration should provide authentication credentials
-  *       (in server/servers elements) for the services with the following IDs:
-  *         - MC.repo: the Maven release repository, at localhost:8081 
-  *         - MC-SNAPSHOT.repo: the Maven SNAPSHOT repository, at localhost:8081
+  * Credentials
   * Docker Pipeline
   * Pipeline Utility Steps
   * Warnings Next Generation
-  *
-  * An administrator will need to permit scripts to use method org.apache.maven.model.Model getVersion.
   */
  
 pipeline { 
@@ -52,38 +45,29 @@ pipeline {
     stages {
         stage('Clean') { 
             steps {
-                configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]){
-                    sh 'mvn -B -s $MAVEN_SETTINGS clean'
-                }
+                sh './gradlew clean'
             }
         }
-        stage('Build and verify') {
-        	/* Includes building Docker images, which will be in the local repository,
-        	 * but does not push the Docker images. Pushing images of development ("SNAPSHOT") versions can be
+        stage('Check, test and publish') {
+        	/* Does not push the Docker image. Pushing images of development ("SNAPSHOT") versions can be
         	 * troublesome because it can result in situations when the remote and local repositories hold different
         	 * versions with the same tag, leading to confusion about which version is actually used,
         	 * and inconsistencies for environments (such as minikube and Kubernetes in general) that do not use the
         	 * local Docker registry.
         	 */
-            when{
-                not{
-                    branch 'main'
-                }
-            } 
             steps {
-                configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]){ 
-                    sh 'mvn -B -s $MAVEN_SETTINGS verify'
+                withCredentials([usernamePassword(credentialsId: 'maven', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh './gradlew check test publish buildDockerImage -PmavenUsername=$USERNAME -PmavenPassword=$PASSWORD'
                 }
             }
         }
-        stage('Build, verify and deploy') {
-        	/* Includes pushing Docker images. */
+        stage('Push Docker image') {
             when{
                  branch 'main'
             } 
             steps {
-                configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]){ 
-                    sh 'mvn -B -s $MAVEN_SETTINGS deploy'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh './gradlew pushDockerImage -PdockerhubUsername=$USERNAME -PdockerhubPassword=$PASSWORD'
                 }
             }
         }
@@ -95,11 +79,11 @@ pipeline {
                 	mavenConsole(),
 					]
             }
-            junit 'target/karma-reports/*.xml'
+            junit 'build/karma-reports/*.xml'
         }
         success {
-            archiveArtifacts artifacts: 'target/*.deb', fingerprint: true
-            archiveArtifacts artifacts: 'target/*.tgz', fingerprint: true
+            archiveArtifacts artifacts: 'build/distributions/*.deb', fingerprint: true
+            archiveArtifacts artifacts: 'build/*.tgz', fingerprint: true
         }
     }
 }
