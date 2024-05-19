@@ -116,8 +116,8 @@ tasks.register('loginDockerHub', Exec) {
 }
 tasks.register('pushDockerImage', Exec) {
     group = 'Publishing'
-    dependsOn ':MC-Spring:buildDockerImage'
-    dependsOn ':MC-Spring:loginDockerHub'
+    dependsOn 'buildDockerImage'
+    dependsOn 'loginDockerHub'
     commandLine 'docker', 'image', 'push', dockerImage
 }
 
