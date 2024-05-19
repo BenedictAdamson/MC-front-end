@@ -8,7 +8,7 @@ plugins {
 group = 'uk.badamson.mc'
 version = '3.3.3'
 description = 'MC-front-end'
-def dockerImage = "mc-front-end-srv:${project.version}"
+def dockerImage = "benedictadamson/mc-front-end-srv:${project.version}"
 
 def releasesRepoUrl = 'http://thegn:8081/releases/'
 def snapshotsRepoUrl = 'http://thegn:8081/snapshots/'
