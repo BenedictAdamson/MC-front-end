@@ -60,12 +60,17 @@ tasks.register('testNpm', NpmTask) {
     inputs.files fileTree("${project.projectDir}/src/main/web/mc-front-end")
 }
 
+String debVersion = (version as String).replace('-SNAPSHOT', '')
+int debRelease = (version as String).contains('-SNAPSHOT')? 1 : 2
 tasks.register('packageDeb', Deb) {
+    inputs.property('debVersion', debVersion)
+    inputs.property('debRelease', debRelease)
     dependsOn npm_run_build
+
     group = 'Publishing'
     packageName = 'missioncommand-fe'
-    version = (project.version as String).replace('-SNAPSHOT', '')
-    release = 1
+    version = debVersion
+    release = debRelease
     priority = 'optional'
     maintainer = 'Benedict Adamson <badamson@spamcop.net>'
     description = 'front-end of the MC game server'
@@ -98,6 +103,8 @@ tasks.register('prepareDockerBuildContext', Copy) {
     into "${project.buildDir}/docker/context"
 }
 tasks.register('buildDockerImage', Exec) {
+    inputs.property('dockerImage', dockerImage)
+
     group = 'Publishing'
     dependsOn 'prepareDockerBuildContext'
     commandLine 'docker', 'build', '--tag', dockerImage, "${project.buildDir}/docker/context"
