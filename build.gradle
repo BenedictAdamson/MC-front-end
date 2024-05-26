@@ -52,19 +52,12 @@ tasks.register('packageNpmApp', Tar) {
     from fileTree("${project.projectDir}/build/ng-dist/mc-front-end")
 }
 
-String testsExecutedMarkerName = "${projectDir}/build/.tests.executed"
 tasks.register('testNpm', NpmTask) {
     group = 'Verification'
     dependsOn assemble
     args = ['run', 'test-headless']
 
     inputs.files fileTree("${project.projectDir}/src/main/web/mc-front-end")
-
-    // allows easy triggering re-tests
-    doLast {
-        new File(testsExecutedMarkerName).text = 'delete this file to force re-execution JavaScript tests'
-    }
-    outputs.file testsExecutedMarkerName
 }
 
 tasks.register('packageDeb', Deb) {
