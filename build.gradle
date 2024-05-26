@@ -137,8 +137,8 @@ publishing {
                 }
                 scm {
                     connection = 'scm:git:git@github.com:BenedictAdamson/MC-front-end.git'
-                    developerConnection = 'scm:git:git@github.com:BenedictAdamson/MC-fron-end.git'
-                    url = 'https://github.com/BenedictAdamson/MC-fron-end'
+                    developerConnection = 'scm:git:git@github.com:BenedictAdamson/MC-front-end.git'
+                    url = 'https://github.com/BenedictAdamson/MC-front-end'
                 }
             }
         }
