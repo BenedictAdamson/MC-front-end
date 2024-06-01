@@ -1,6 +1,6 @@
 import {Observable, of} from 'rxjs';
 
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import {AbstractGameBackEndService} from './abstract.game.back-end.service';

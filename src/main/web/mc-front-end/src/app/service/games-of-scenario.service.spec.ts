@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { HttpTestingController, TestRequest, provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { AbstractGamesOfScenarioBackEndService } from './abstract.games-of-scenario.back-end.service';
 import { HttpGamesOfScenarioBackEndService } from './http.games-of-scenario.back-end.service';
@@ -29,8 +29,9 @@ describe('GamesOfScenarioService', () => {
 
 	const setUp = function(): GamesOfScenarioService {
 		TestBed.configureTestingModule({
-			imports: [HttpClientTestingModule]
-		});
+    imports: [],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
 		const httpClient: HttpClient = TestBed.inject(HttpClient);
 		httpTestingController = TestBed.inject(HttpTestingController);

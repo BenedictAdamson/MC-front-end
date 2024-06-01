@@ -1,10 +1,10 @@
 import { v4 as uuid } from 'uuid';
 import { Observable } from 'rxjs';
 
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { HttpTestingController, TestRequest, provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { AbstractMayJoinGameBackEndService } from './abstract.may-join-game.back-end.service';
 import { HttpMayJoinGameBackEndService } from './http.may-join-game.back-end.service';
@@ -20,8 +20,9 @@ describe('MayJoinGameService', () => {
 
 	const setUp = function(): MayJoinGameService {
 		TestBed.configureTestingModule({
-			imports: [HttpClientTestingModule]
-		});
+    imports: [],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
 		const httpClient: HttpClient = TestBed.inject(HttpClient);
 		httpTestingController = TestBed.inject(HttpTestingController);

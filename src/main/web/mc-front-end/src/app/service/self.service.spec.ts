@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { HttpTestingController, TestRequest, provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { SelfService } from './self.service';
 import { User } from '../user';
@@ -125,8 +125,9 @@ describe('SelfService', () => {
 
    beforeEach(() => {
       TestBed.configureTestingModule({
-         imports: [HttpClientTestingModule]
-      });
+    imports: [],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
       /* Inject for each test:
        * HTTP requests will be handled by the mock back-end.

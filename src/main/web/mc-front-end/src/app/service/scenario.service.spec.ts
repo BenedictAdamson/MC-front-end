@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { v4 as uuid } from 'uuid';
 
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { AbstractScenarioBackEndService } from './abstract.scenario.back-end.service';
 import { HttpScenarioBackEndService } from './http.scenario.back-end.service';
@@ -33,8 +33,9 @@ describe('ScenarioService', () => {
 
    const setUp = (): ScenarioService => {
       TestBed.configureTestingModule({
-         imports: [HttpClientTestingModule]
-      });
+    imports: [],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
       const httpClient: HttpClient = TestBed.inject(HttpClient);
       httpTestingController = TestBed.inject(HttpTestingController);

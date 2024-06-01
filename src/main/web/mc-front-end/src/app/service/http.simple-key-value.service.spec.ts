@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
 
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { HttpSimpleKeyValueService } from './http.simple-key-value.service';
 
@@ -65,8 +65,9 @@ describe('HttpSimpleKeyValueService', () => {
 		allUrl: string | undefined,
 		addUrl: string | undefined) => {
 		TestBed.configureTestingModule({
-			imports: [HttpClientTestingModule]
-		});
+    imports: [],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
 		/* Inject for each test:
 		 * HTTP requests will be handled by the mock back-end.

@@ -1,10 +1,10 @@
 import {v4 as uuid} from 'uuid';
 import {Observable} from 'rxjs';
 
-import {HttpClient} from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
 import {AbstractGameBackEndService} from './abstract.game.back-end.service';
 import {AbstractSelfService} from './abstract.self.service';
@@ -49,8 +49,9 @@ describe('GameService', () => {
 
   const setUp = (self: User | null): GameService => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
-    });
+    imports: [],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
     selfService = new MockSelfService(self);
     const httpClient: HttpClient = TestBed.inject(HttpClient);

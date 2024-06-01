@@ -1,8 +1,8 @@
 import { v4 as uuid } from 'uuid';
 
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
+import { HttpTestingController, TestRequest, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AbstractUserBackEndService } from './abstract.user.back-end.service';
 import { HttpUserBackEndService, getApiUserPath, apiUsersPath } from './http.user.back-end.service';
@@ -29,8 +29,9 @@ describe('UserService', () => {
 
 	const setUp = function(): UserService {
 		TestBed.configureTestingModule({
-			imports: [HttpClientTestingModule]
-		});
+    imports: [],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
 		const httpClient: HttpClient = TestBed.inject(HttpClient);
 		httpTestingController = TestBed.inject(HttpTestingController);

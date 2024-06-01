@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -35,38 +35,32 @@ import { HomeComponent } from './home/home.component';
 import { SelfComponent } from './self/self.component';
 
 
-@NgModule({
-	imports: [
-		BrowserModule,
-		CommonModule,
-		FormsModule,
-		AppRoutingModule,
-		HttpClientModule,
-		RouterModule
-	],
-	declarations: [
-		AddUserComponent,
-		AppComponent,
-		HomeComponent,
-		GameComponent,
-		GamesComponent,
-		GamePlayersComponent,
-		LoginComponent,
-		ScenarioComponent,
-		ScenariosComponent,
-		SelfComponent,
-		UsersComponent,
-		UserComponent
-	],
-	providers: [
-		WINDOW_PROVIDER,
-		{ provide: AbstractGameBackEndService, useClass: HttpGameBackEndService },
-		{ provide: AbstractGamesOfScenarioBackEndService, useClass: HttpGamesOfScenarioBackEndService },
-		{ provide: AbstractMayJoinGameBackEndService, useClass: HttpMayJoinGameBackEndService },
-		{ provide: AbstractScenarioBackEndService, useClass: HttpScenarioBackEndService },
-		{ provide: AbstractSelfService, useClass: SelfService },
-		{ provide: AbstractUserBackEndService, useClass: HttpUserBackEndService }
-	],
-	bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AddUserComponent,
+        AppComponent,
+        HomeComponent,
+        GameComponent,
+        GamesComponent,
+        GamePlayersComponent,
+        LoginComponent,
+        ScenarioComponent,
+        ScenariosComponent,
+        SelfComponent,
+        UsersComponent,
+        UserComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        CommonModule,
+        FormsModule,
+        AppRoutingModule,
+        RouterModule], providers: [
+        WINDOW_PROVIDER,
+        { provide: AbstractGameBackEndService, useClass: HttpGameBackEndService },
+        { provide: AbstractGamesOfScenarioBackEndService, useClass: HttpGamesOfScenarioBackEndService },
+        { provide: AbstractMayJoinGameBackEndService, useClass: HttpMayJoinGameBackEndService },
+        { provide: AbstractScenarioBackEndService, useClass: HttpScenarioBackEndService },
+        { provide: AbstractSelfService, useClass: SelfService },
+        { provide: AbstractUserBackEndService, useClass: HttpUserBackEndService },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
